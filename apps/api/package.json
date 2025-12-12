@@ -2,6 +2,6 @@
   "name": "api",
   "private": true,
   "scripts": {
-    "dev": "PYTHONPATH=../.. python -m uvicorn apps.api.main:app --reload --host 0.0.0.0 --port 5000"
+    "dev": "cross-env PYTHONPATH=../.. python -m uvicorn apps.api.main:app --reload --host 0.0.0.0 --port 8000"
   }
 }
