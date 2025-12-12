@@ -2,7 +2,8 @@ import { env } from "@/config";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: `${env.api.next_public_api_url}/api`,
+  baseURL: "/api", // NOTE: if using ngrok
+  // baseURL: `${env.api.next_public_api_url}/api`, //NOTE: using this for dev/prod
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

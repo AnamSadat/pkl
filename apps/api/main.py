@@ -10,7 +10,8 @@ origins = ["http://localhost:3000", "http://127.0.0.1:3000"]
 
 app.add_middleware(
 	CORSMiddleware,
-	allow_origins=origins,
+  allow_origins=origins,
+	allow_origin_regex=r"https://.*\.ngrok-free\.dev",
 	allow_credentials=True,
 	allow_methods=["*"],
 	allow_headers=["*"],
@@ -53,4 +54,4 @@ app.include_router(router, prefix="/api", tags=["API"])
 
 @app.get("/")
 def root():
-	return {"message": "halo dunia"}
+	return {"message": "Fast API Server is running..."}
