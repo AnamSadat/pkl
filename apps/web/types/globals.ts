@@ -15,3 +15,5 @@ export type ErrorProps = {
 };
 
 export type SidebarProps = { initialOpen?: boolean };
+
+export type ClassNameProps = { className?: string };
