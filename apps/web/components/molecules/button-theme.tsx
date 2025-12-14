@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
 
-export function ModeToggle() {
+export function ButtonTheme() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -41,7 +41,7 @@ export function ModeToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="ghost" size="icon" className="cursor-pointer">
           {renderIcon()}
           <span className="sr-only">Toggle theme</span>
         </Button>

@@ -1,11 +1,29 @@
+import { ClassNameProps } from "@/types";
 import { Input } from "@repo/ui/components/input";
+import { cn } from "@repo/ui/utils";
 import { Search } from "lucide-react";
 
-export function InputSearch() {
+export type InputSearcProps = ClassNameProps & {
+  search: string;
+  onSearchChange: (value: string) => void;
+  placeholder: string;
+};
+
+export function InputSearch({
+  search,
+  onSearchChange,
+  placeholder,
+  className,
+}: InputSearcProps) {
   return (
-    <div className="relative max-w-md">
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-      <Input type="text" placeholder="Search..." className="pl-10 h-10" />
+    <div className="relative flex w-full items-center gap-2 md:w-1/3">
+      <Search className="h-4 w-4 text-muted-foreground absolute left-3" />
+      <Input
+        placeholder={placeholder}
+        value={search}
+        onChange={(e) => onSearchChange(e.target.value)}
+        className={cn("h-9 pl-10", className)}
+      />
     </div>
   );
 }
