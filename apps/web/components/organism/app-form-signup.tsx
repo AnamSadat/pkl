@@ -38,7 +38,8 @@ import {
   User,
 } from "lucide-react";
 import { useState } from "react";
-import { useRegister, useAuth } from "@/hooks";
+import { useRegister } from "@/hooks";
+import { useAuth } from "@/store";
 import { useRouter } from "next/navigation";
 import { cn } from "@repo/ui/utils";
 

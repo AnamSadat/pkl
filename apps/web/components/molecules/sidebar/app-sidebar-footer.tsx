@@ -15,7 +15,7 @@ import {
 } from "@repo/ui/components/sidebar";
 import { Skeleton } from "@repo/ui/components/skeleton";
 import { ChevronDown, ChevronUp, User2 } from "lucide-react";
-import { useAuth } from "@/hooks";
+import { useAuth } from "@/store";
 
 export function AppSidebarFooter() {
   const { isOpen, open, close } = useDisclosure();
