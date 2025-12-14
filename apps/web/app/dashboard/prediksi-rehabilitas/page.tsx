@@ -1,4 +1,7 @@
-import { AppBreadcrumb } from "@/components/organism";
+"use client";
+
+import { Header } from "@/components/molecules";
+import { DragDropUpload } from "@/components/molecules/drag-drop-upload";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,6 +14,14 @@ import {
   AlertDialogTrigger,
 } from "@repo/ui/components/alert-dialog";
 import { Button } from "@repo/ui/components/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@repo/ui/components/dialog";
 
 import {
   Pagination,
@@ -30,7 +41,9 @@ import {
   TableHeader,
   TableRow,
 } from "@repo/ui/components/table";
+import { cn } from "@repo/ui/utils";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 
 const invoices = [
   {
@@ -78,63 +91,82 @@ const invoices = [
 ];
 
 export default function Predict() {
+  const [tempFiles, setTempFiles] = useState<File[]>([]);
+
+  // 2. file yang sudah di-save
+  const [savedFiles, setSavedFiles] = useState<File[]>([]);
+
+  const handleSave = () => {
+    setSavedFiles(tempFiles); // resmi disimpan
+    console.log("Saved files:", tempFiles);
+  };
+
+  const handleCancel = () => {
+    setTempFiles([]); // buang perubahan
+  };
+
+  const paddingLeft = "pl-5";
+  const paddingRight = "pr-5";
+
   return (
     <div className="space-y-6 px-4 py-5">
-      <AppBreadcrumb
-        items={[
-          {
-            name: "Dashboard",
-            href: "/dashboard",
-          },
-          {
-            name: "Prediksi Rehabilitasi",
-          },
-        ]}
-      />
-
-      <h1 className="text-3xl font-bold mb-4">Prediksi Rehabilitasi</h1>
+      <Header title="Prediksi Rehabilitasi" classNameTitle="mb-4" />
 
       <div className="mb-3">
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
+        <Dialog>
+          <DialogTrigger asChild>
             <Button variant="secondary">
               <Plus /> {""}
               Tambah Data
             </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction>Continue</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+          </DialogTrigger>
+
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Upload Dokumen</DialogTitle>
+            </DialogHeader>
+
+            {/* Drag & Drop */}
+            <DragDropUpload
+              accept=".csv,.docx"
+              multiple
+              onFilesChange={(files) => setTempFiles(files)}
+              classNameCard="py-20"
+            />
+
+            <DialogFooter className="gap-2">
+              <Button variant="outline" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button onClick={handleSave}>Save</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="rounded-lg border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">Invoice</TableHead>
+              <TableHead className={cn("w-[100px]", paddingLeft)}>
+                Invoice
+              </TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Method</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead className={cn("text-right", paddingRight)}>
+                Amount
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {invoices.map((invoice) => (
               <TableRow key={invoice.invoice}>
-                <TableCell className="font-medium">{invoice.invoice}</TableCell>
+                <TableCell className={cn("font-medium", paddingLeft)}>
+                  {invoice.invoice}
+                </TableCell>
                 <TableCell>{invoice.paymentStatus}</TableCell>
                 <TableCell>{invoice.paymentMethod}</TableCell>
-                <TableCell className="text-right">
+                <TableCell className={cn("text-right", paddingRight)}>
                   {invoice.totalAmount}
                 </TableCell>
               </TableRow>
