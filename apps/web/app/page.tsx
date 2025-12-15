@@ -12,18 +12,39 @@ export default function AuthPage() {
   return (
     <div
       className={cn(
-        "flex min-h-screen bg-gray-50 dark:bg-background",
-        isSignIn
-          ? "justify-center items-center"
-          : "justify-center items-start pt-16 pb-14"
+        "flex min-h-svh overflow-hidden",
+        "items-center justify-center",
+        // Mobile: no padding, Desktop: use padding
+        "py-0 sm:py-8",
+        // Desktop: use bg, Mobile: no bg (using media query for no flash)
+        "sm:bg-gray-50 sm:dark:bg-background"
       )}
     >
-      <div className="sm:flex md:grid grid-cols-2 w-4/5 max-w-6xl md:min-h-[600px] rounded-2xl overflow-hidden shadow-2xl dark:shadow-gray-900">
-        {/* Kiri */}
-        <div className="flex flex-col justify-center gap-5 px-10 pt-10 md:pt-0 pb-12 bg-white dark:bg-sidebar">
-          <div className="flex justify-between items-center pt-10">
-            <h1 className="text-2xl font-semibold">LOGO</h1>
-            <p className="text-sm hidden md:block">
+      <div
+        className={cn(
+          "w-full sm:w-4/5 max-w-6xl",
+          // Desktop only: grid, shadow, rounded
+          "sm:grid sm:grid-cols-1 md:grid-cols-2 sm:rounded-2xl sm:shadow-2xl sm:dark:shadow-gray-900"
+        )}
+      >
+        {/* Form Section */}
+        <div
+          className={cn(
+            "flex flex-col gap-3 sm:gap-5 px-4 sm:px-10 py-4 sm:py-8",
+            "justify-center min-h-svh sm:min-h-0",
+            // Desktop only: bg and rounded
+            "sm:bg-white sm:dark:bg-sidebar sm:rounded-l-2xl md:rounded-r-none"
+          )}
+        >
+          {/* Desktop: Logo + Link in header */}
+          <div className="hidden sm:flex justify-between items-center shrink-0">
+            <Image
+              src={"/images/bnn-logo.png"}
+              width={50}
+              height={50}
+              alt="Logo BNN"
+            />
+            <p className="text-xs sm:text-sm">
               {isSignIn ? "Belum punya akun? " : "Sudah punya akun? "}
               <button
                 type="button"
@@ -35,9 +56,19 @@ export default function AuthPage() {
             </p>
           </div>
 
+          {/* Mobile: Logo centered on above form */}
+          <div className="flex sm:hidden justify-center mb-2">
+            <Image
+              src={"/images/bnn-logo.png"}
+              width={60}
+              height={60}
+              alt="Logo BNN"
+            />
+          </div>
+
           {isSignIn ? <AppFormSignIn /> : <AppFormSignUp />}
 
-          <p className="text-sm md:hidden text-center">
+          <p className="text-xs sm:text-sm sm:hidden text-center">
             {isSignIn ? "Belum punya akun? " : "Sudah punya akun? "}
             <button
               type="button"
@@ -49,7 +80,7 @@ export default function AuthPage() {
           </p>
         </div>
 
-        {/* Kanan */}
+        {/* Image Section - Desktop only */}
         <div className="relative hidden md:block">
           <Image
             src={
@@ -57,9 +88,9 @@ export default function AuthPage() {
                 ? "/images/kantor-signin.jpg"
                 : "/images/kantor-signup.jpg"
             }
-            alt="saya"
+            alt="Office"
             fill
-            className="object-cover"
+            className="object-cover rounded-r-2xl"
           />
         </div>
       </div>
