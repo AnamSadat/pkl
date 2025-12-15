@@ -6,6 +6,7 @@ export type DragDropProps = ClassNameProps & {
   multiple?: boolean;
   classNameCard?: string;
   maxSize?: number; // in bytes
+  maxListHeight?: string; // e.g. "200px", "max-h-48"
 };
 
 export type FileWithProgress = {
