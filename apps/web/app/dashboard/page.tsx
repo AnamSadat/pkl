@@ -1,6 +1,7 @@
 import {
   ChartAreaInteractive,
   DonutChart,
+  Header,
   SummaryCardItem,
   SummaryCards,
 } from "@/components/molecules";
@@ -18,7 +19,7 @@ export default function Home() {
     {
       title: "Peserta Aktif",
       value: "20",
-      borderColor: "border-l-red-500",
+      borderColor: "border-l-emerald-500",
       description: "Peserta yang sedang menjalani rehabilitasi.",
       icon: <Users className="h-5 w-5 text-muted-foreground" />,
     },
@@ -32,7 +33,7 @@ export default function Home() {
     {
       title: "Peserta Risiko Tinggi",
       value: "20",
-      borderColor: "border-l-emerald-500",
+      borderColor: "border-l-red-500",
       description: "Perlu pemantauan dan tindak lanjut lebih intensif.",
       icon: <AlertTriangle className="h-5 w-5 text-red-500" />,
     },
@@ -40,6 +41,11 @@ export default function Home() {
 
   return (
     <div className="space-y-6 px-4 py-5">
+      <Header
+        title="Dashboard"
+        description="Ringkasan data rehabilitasi dan statistik fasilitas."
+      />
+
       <SummaryCards items={summaryItems} columns={4} />
 
       <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
