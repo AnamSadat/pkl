@@ -42,23 +42,25 @@ export function UploadDialog({ onSave }: UploadDialogProps) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg max-h-[calc(100vh-2.5rem)] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileUp className="h-5 w-5" />
             Upload Dokumen
           </DialogTitle>
           <DialogDescription>
-            Upload file CSV atau DOCX untuk menambahkan data prediksi.
+            Upload file CSV atau XLSX untuk menambahkan data prediksi.
           </DialogDescription>
         </DialogHeader>
 
-        <AppDragDropUpload
-          accept=".csv, .docx"
-          multiple
-          onFilesChange={setTempFiles}
-          classNameCard="py-16"
-        />
+        <div className="flex-1 overflow-hidden py-10">
+          <AppDragDropUpload
+            accept=".csv, .xlsx"
+            multiple={false}
+            onFilesChange={setTempFiles}
+            classNameCard="py-20"
+          />
+        </div>
 
         <DialogFooter className="gap-2">
           <Button

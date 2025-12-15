@@ -53,26 +53,36 @@ export function AppDragDropUpload({
           <p className="text-sm font-medium">
             Uploading - {completedCount}/{totalCount} files
           </p>
-          {uploadingFiles.map((item) => (
-            <FileUploadItem
-              key={item.file.name}
-              item={item}
-              onCancel={cancelUpload}
-            />
-          ))}
+          <div
+            className="space-y-3 overflow-y-auto pr-1"
+            style={{ maxHeight: "95px" }}
+          >
+            {uploadingFiles.map((item) => (
+              <FileUploadItem
+                key={item.file.name}
+                item={item}
+                onCancel={cancelUpload}
+              />
+            ))}
+          </div>
         </div>
       )}
 
       {completedFiles.length > 0 && (
         <div className="space-y-3">
           <p className="text-sm font-medium">Uploaded</p>
-          {completedFiles.map((file, index) => (
-            <FileCompletedItem
-              key={index}
-              file={file}
-              onRemove={() => removeFile(index)}
-            />
-          ))}
+          <div
+            className="space-y-3 overflow-y-auto pr-1"
+            style={{ maxHeight: "160px" }}
+          >
+            {completedFiles.map((file, index) => (
+              <FileCompletedItem
+                key={index}
+                file={file}
+                onRemove={() => removeFile(index)}
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>

@@ -127,7 +127,7 @@ export function FacilityCardGrid({ facilities }: FacilityCardGridProps) {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full gap-2 group-hover:bg-primary group-hover:text-primary-foreground"
+                className="w-full gap-2 group-hover:bg-primary cursor-pointer"
               >
                 Lihat Detail
                 <ArrowUpDown className="h-3 w-3" />
