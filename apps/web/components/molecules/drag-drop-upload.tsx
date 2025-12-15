@@ -113,6 +113,7 @@ export function DragDropUpload({
   const totalCount = uploadingFiles.length + completedFiles.length;
 
   const styleSucces = "border-green-500 bg-green-100 dark:bg-green-950/30";
+  const acceptFormated = `Supported formates: ${accept}`;
 
   return (
     <div className={cn("space-y-4", className)}>
@@ -140,7 +141,9 @@ export function DragDropUpload({
         <p className="text-sm">
           <span className="font-medium">Click to upload</span> atau drag & drop
         </p>
-        <p className="text-xs text-muted-foreground">{accept || "Any file"}</p>
+        <p className="text-xs text-muted-foreground">
+          {acceptFormated || "Any file"}
+        </p>
       </Card>
 
       <Input

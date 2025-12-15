@@ -2,27 +2,16 @@
 
 import { Header } from "@/components/molecules";
 import { DragDropUpload } from "@/components/molecules/drag-drop-upload";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@repo/ui/components/alert-dialog";
 import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
-
 import {
   Pagination,
   PaginationContent,
@@ -32,7 +21,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@repo/ui/components/pagination";
-
 import {
   Table,
   TableBody,
@@ -42,7 +30,7 @@ import {
   TableRow,
 } from "@repo/ui/components/table";
 import { cn } from "@repo/ui/utils";
-import { Plus } from "lucide-react";
+import { FileUp, Plus } from "lucide-react";
 import { useState } from "react";
 
 const invoices = [
@@ -90,92 +78,136 @@ const invoices = [
   },
 ];
 
+const statusStyles: Record<string, string> = {
+  Paid: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+  Pending:
+    "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+  Unpaid: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+};
+
 export default function Predict() {
   const [tempFiles, setTempFiles] = useState<File[]>([]);
-
-  // 2. file yang sudah di-save
-  const [savedFiles, setSavedFiles] = useState<File[]>([]);
+  const [_savedFiles, setSavedFiles] = useState<File[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleSave = () => {
-    setSavedFiles(tempFiles); // resmi disimpan
+    setSavedFiles(tempFiles);
+    setIsDialogOpen(false);
     console.log("Saved files:", tempFiles);
   };
 
   const handleCancel = () => {
-    setTempFiles([]); // buang perubahan
+    setTempFiles([]);
+    setIsDialogOpen(false);
   };
-
-  const paddingLeft = "pl-5";
-  const paddingRight = "pr-5";
 
   return (
     <div className="space-y-6 px-4 py-5">
-      <Header title="Prediksi Rehabilitasi" classNameTitle="mb-4" />
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <Header
+          title="Prediksi Rehabilitasi"
+          description="Kelola dan prediksi data rehabilitasi peserta."
+        />
 
-      <div className="mb-3">
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="secondary">
-              <Plus /> {""}
+            <Button className="cursor-pointer">
+              <Plus className="h-4 w-4" />
               Tambah Data
             </Button>
           </DialogTrigger>
 
           <DialogContent className="sm:max-w-lg">
             <DialogHeader>
-              <DialogTitle>Upload Dokumen</DialogTitle>
+              <DialogTitle className="flex items-center gap-2">
+                <FileUp className="h-5 w-5" />
+                Upload Dokumen
+              </DialogTitle>
+              <DialogDescription>
+                Upload file CSV atau DOCX untuk menambahkan data prediksi.
+              </DialogDescription>
             </DialogHeader>
 
-            {/* Drag & Drop */}
             <DragDropUpload
-              accept=".csv,.docx"
+              accept=".csv, .docx"
               multiple
               onFilesChange={(files) => setTempFiles(files)}
-              classNameCard="py-20"
+              classNameCard="py-16"
             />
 
             <DialogFooter className="gap-2">
-              <Button variant="outline" onClick={handleCancel}>
-                Cancel
+              <Button
+                variant="outline"
+                onClick={handleCancel}
+                className="cursor-pointer"
+              >
+                Batal
               </Button>
-              <Button onClick={handleSave}>Save</Button>
+              <Button
+                onClick={handleSave}
+                disabled={tempFiles.length === 0}
+                className="cursor-pointer"
+              >
+                Simpan
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
 
-      <div className="rounded-lg border">
+      <div className="rounded-lg border bg-card">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead className={cn("w-[100px]", paddingLeft)}>
-                Invoice
-              </TableHead>
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="w-[120px] pl-5">Invoice</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Method</TableHead>
-              <TableHead className={cn("text-right", paddingRight)}>
-                Amount
-              </TableHead>
+              <TableHead className="text-right pr-5">Amount</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.invoice}>
-                <TableCell className={cn("font-medium", paddingLeft)}>
-                  {invoice.invoice}
-                </TableCell>
-                <TableCell>{invoice.paymentStatus}</TableCell>
-                <TableCell>{invoice.paymentMethod}</TableCell>
-                <TableCell className={cn("text-right", paddingRight)}>
-                  {invoice.totalAmount}
+            {invoices.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={4}
+                  className="h-32 text-center text-muted-foreground"
+                >
+                  Belum ada data. Klik &quot;Tambah Data&quot; untuk memulai.
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              invoices.map((invoice) => (
+                <TableRow key={invoice.invoice}>
+                  <TableCell className="font-medium pl-5">
+                    {invoice.invoice}
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={cn(
+                        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+                        statusStyles[invoice.paymentStatus]
+                      )}
+                    >
+                      {invoice.paymentStatus}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {invoice.paymentMethod}
+                  </TableCell>
+                  <TableCell className="text-right font-medium pr-5">
+                    {invoice.totalAmount}
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
 
-        <div className="py-2 border-t">
-          <Pagination>
+        <div className="flex items-center justify-between border-t px-4 py-3">
+          <p className="text-sm text-muted-foreground">
+            Menampilkan {invoices.length} data
+          </p>
+          <Pagination className="w-auto mx-0">
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious href="#" />
