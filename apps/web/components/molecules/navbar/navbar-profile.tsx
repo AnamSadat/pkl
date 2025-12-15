@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthContext } from "@/context";
+import { useAuth } from "@/store";
 import { useDisclosure } from "@/hooks";
 import { Button } from "@repo/ui/components/button";
 import {
@@ -9,27 +9,22 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
 import { Skeleton } from "@repo/ui/components/skeleton";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { useAuth } from "@/hooks";
 import { env } from "@/config";
 import { profileProps } from "@/types";
+import { useRouter } from "next/navigation";
 
 const urlApiDoc = `${env.api.next_public_api_url}/docs`;
 
-export function profile({ icons }: profileProps) {
-  const { user, loading, logout } = useAuthContext();
+export function Profile({ icons }: profileProps) {
+  const { user, loading } = useAuth();
 
   return (
     <div className="flex gap-3">
@@ -55,9 +50,14 @@ export function profile({ icons }: profileProps) {
 }
 
 export function NavbarProfile() {
-  const { logout } = useAuthContext();
-  // const { logout } = useAuth();
+  const { logout } = useAuth();
   const { isOpen, open, close } = useDisclosure();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
 
   return (
     <DropdownMenu
@@ -81,8 +81,8 @@ export function NavbarProfile() {
           </span>
           <span className="hidden md:block">
             {isOpen
-              ? profile({ icons: <ChevronUp /> })
-              : profile({ icons: <ChevronDown /> })}
+              ? Profile({ icons: <ChevronUp /> })
+              : Profile({ icons: <ChevronDown /> })}
           </span>
         </Button>
       </DropdownMenuTrigger>
@@ -135,7 +135,7 @@ export function NavbarProfile() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={logout}>
+        <DropdownMenuItem onClick={handleLogout}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

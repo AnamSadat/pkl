@@ -4,6 +4,7 @@
 node_modules
 .pnp
 .pnp.js
+venv*
 
 # Local env files
 .env
@@ -27,6 +28,8 @@ out/
 build
 dist
 
+# backup code ui
+backup.txt
 
 # Debug
 npm-debug.log*

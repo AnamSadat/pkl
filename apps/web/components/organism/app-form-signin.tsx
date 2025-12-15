@@ -32,7 +32,7 @@ import Link from "next/link";
 import { Checkbox } from "@repo/ui/components/checkbox";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { useAuth } from "@/hooks";
+import { useAuth } from "@/store";
 import { cn } from "@repo/ui/utils";
 
 export function AppFormSignIn() {

@@ -8,34 +8,58 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@repo/ui/components/sidebar";
-import { Home, TrendingUpDown } from "lucide-react";
+import {
+  Activity,
+  Brain,
+  Building2,
+  CalendarClock,
+  FileWarning,
+  Home,
+} from "lucide-react";
 import { cn } from "@repo/ui/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+const menuItems = [
+  { title: "Home", url: "/dashboard", icon: Home },
+  {
+    title: "Prediksi Rehabilitasi",
+    url: "/dashboard/prediksi-rehabilitas",
+    icon: Brain,
+  },
+  {
+    title: "Fasilitas Overview",
+    url: "/dashboard/fasilitas-overview",
+    icon: Building2,
+  },
+  { title: "Follow Up", url: "/dashboard/follow-up", icon: CalendarClock },
+  {
+    title: "Analisis Risiko",
+    url: "/dashboard/analisis-risiko",
+    icon: Activity,
+  },
+  { title: "Log Sistem", url: "/dashboard/log-sistem", icon: FileWarning },
+];
+
 export function AppSidebarContent() {
   const pathname = usePathname();
-  const items = [
-    {
-      title: "Home",
-      url: "/dashboard",
-      icon: Home,
-    },
-    {
-      title: "Prediksi Rehabilitasi",
-      url: "/dashboard/predict",
-      icon: TrendingUpDown,
-    },
-  ];
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
 
   return (
     <SidebarContent>
       <SidebarGroup className="flex items-center justify-center gap-2">
-        <SidebarGroupLabel>Badan Nasional Narkotika</SidebarGroupLabel>
+        <SidebarGroupLabel>Badan Narkotika Nasional</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu className="flex gap-3">
-            {items.map((item) => (
+            {menuItems.map((item) => (
               <SidebarMenuItem key={item.title} className="mx-3">
                 <SidebarMenuButton
                   className="hover:bg-neutral-200 dark:hover:bg-neutral-800"
@@ -43,6 +67,7 @@ export function AppSidebarContent() {
                 >
                   <Link
                     href={item.url}
+                    onClick={handleMenuClick}
                     className={cn(
                       "px-4",
                       pathname === item.url
