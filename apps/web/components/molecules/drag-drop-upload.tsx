@@ -7,6 +7,7 @@ import { cn } from "@repo/ui/utils";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import { ClassNameProps } from "@/types";
+import toast from "react-hot-toast";
 
 export type DragDropProps = ClassNameProps & {
   onFilesChange?: (files: File[]) => void;
@@ -28,6 +29,20 @@ function formatFileSize(bytes: number): string {
   const sizes = ["B", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+}
+
+function getAcceptedExtensions(accept?: string): string[] {
+  if (!accept) return [];
+  return accept
+    .split(",")
+    .map((ext) => ext.trim().toLowerCase().replace(".", ""));
+}
+
+function isFileAccepted(file: File, accept?: string): boolean {
+  if (!accept) return true;
+  const acceptedExtensions = getAcceptedExtensions(accept);
+  const fileExtension = file.name.split(".").pop()?.toLowerCase() || "";
+  return acceptedExtensions.includes(fileExtension);
 }
 
 export function DragDropUpload({
@@ -82,7 +97,29 @@ export function DragDropUpload({
     if (!newFiles) return;
     const fileArray = Array.from(newFiles);
 
-    const newUploadingFiles: FileWithProgress[] = fileArray.map((file) => ({
+    // Validate file types
+    const validFiles: File[] = [];
+    const invalidFiles: File[] = [];
+
+    fileArray.forEach((file) => {
+      if (isFileAccepted(file, accept)) {
+        validFiles.push(file);
+      } else {
+        invalidFiles.push(file);
+      }
+    });
+
+    // Show error toast for invalid files
+    if (invalidFiles.length > 0) {
+      const acceptedExtensions = getAcceptedExtensions(accept).join(", ");
+      toast.error(
+        `File tidak didukung: ${invalidFiles.map((f) => f.name).join(", ")}. Format yang diizinkan: ${acceptedExtensions}`
+      );
+    }
+
+    if (validFiles.length === 0) return;
+
+    const newUploadingFiles: FileWithProgress[] = validFiles.map((file) => ({
       file,
       progress: 0,
       uploadedSize: 0,
@@ -94,7 +131,7 @@ export function DragDropUpload({
     );
 
     newUploadingFiles.forEach((f) => simulateUpload(f));
-    onFilesChange?.([...completedFiles, ...fileArray]);
+    onFilesChange?.([...completedFiles, ...validFiles]);
   };
 
   const removeFile = (index: number) => {
