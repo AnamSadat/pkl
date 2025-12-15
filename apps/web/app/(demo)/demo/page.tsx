@@ -1,7 +1,7 @@
 "use client";
 
 import { FormDemo } from "@/components/demo/form-demo";
-import { DragDropUpload } from "@/components/molecules/drag-drop-upload";
+import { AppDragDropUpload } from "@/components/organism";
 import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
@@ -42,7 +42,7 @@ export default function Demo() {
           </DialogHeader>
 
           {/* Drag & Drop */}
-          <DragDropUpload
+          <AppDragDropUpload
             accept=".pdf,.docx"
             multiple
             onFilesChange={(files) => setTempFiles(files)}

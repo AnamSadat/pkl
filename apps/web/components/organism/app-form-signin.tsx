@@ -165,8 +165,12 @@ export function AppFormSignIn() {
               name="remember"
               control={form.control}
               render={({ field }) => (
-                <Field>
-                  <InputGroup className="flex items-center justify-between border-0 dark:bg-sidebar shadow-none max-h-[20px]">
+                <Field className="bg-none">
+                  <InputGroup
+                    className={cn(
+                      "flex items-center justify-between border-0  shadow-none max-h-[20px] dark:bg-zinc-950 md:dark:bg-sidebar"
+                    )}
+                  >
                     <div className="flex items-center gap-2">
                       <Checkbox
                         id="remember"

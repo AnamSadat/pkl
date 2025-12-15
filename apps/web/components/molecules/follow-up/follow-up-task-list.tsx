@@ -135,11 +135,11 @@ export function FollowUpTaskList({
             search={search}
             onSearchChange={onSearchChange}
             placeholder="Cari nama peserta atau fasilitas..."
-            className="w-2xl"
+            className="lg:w-2xl"
           />
-          <div className="flex flex-wrap gap-2 md:justify-end">
+          <div className="grid grid-cols-2 gap-2 md:flex md:flex-wrap md:justify-end">
             <Select value={stageFilter} onValueChange={onStageFilterChange}>
-              <SelectTrigger className="h-9 w-[150px]">
+              <SelectTrigger className="h-9 w-full md:w-[150px]">
                 <SelectValue placeholder="Tahap" />
               </SelectTrigger>
               <SelectContent>
@@ -150,7 +150,7 @@ export function FollowUpTaskList({
               </SelectContent>
             </Select>
             <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-              <SelectTrigger className="h-9 w-[150px]">
+              <SelectTrigger className="h-9 w-full md:w-[150px]">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>

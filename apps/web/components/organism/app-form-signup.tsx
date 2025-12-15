@@ -244,7 +244,7 @@ export function AppFormSignUp() {
                   </InputGroup>
                   <InputGroupAddon align="block-end" className="p-0">
                     <InputGroupText className="tabular-nums text-gray-500 group-data-[invalid=true]:text-red-600">
-                      Min 8 karakter, A-z, angka, simbol
+                      Min 8 karakter, A-z, angka, simbol.
                     </InputGroupText>
                   </InputGroupAddon>
                   {fieldState.invalid && (

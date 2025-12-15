@@ -25,3 +25,9 @@ export * from "@/components/molecules/follow-up";
 
 // ============= dir log-sistem ==================
 export * from "@/components/molecules/log-sistem";
+
+// ============= dir drag-drop-upload ==================
+export * from "@/components/molecules/drag-drop-upload";
+
+// ============= dir prediksi-rehabilitasi ==================
+export * from "@/components/molecules/prediksi-rehabilitasi";
