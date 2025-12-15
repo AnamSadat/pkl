@@ -112,9 +112,9 @@ export function RiskTable({
             onSearchChange={onSearchChange}
             placeholder="Cari nama atau fasilitas..."
           />
-          <div className="flex flex-wrap gap-2 md:justify-end">
+          <div className="grid grid-cols-2 gap-2 md:flex md:flex-wrap md:justify-end">
             <Select value={riskFilter} onValueChange={onRiskFilterChange}>
-              <SelectTrigger className="h-9 w-[150px]">
+              <SelectTrigger className="h-9 w-full md:w-[150px]">
                 <SelectValue placeholder="Semua risiko" />
               </SelectTrigger>
               <SelectContent>
@@ -124,12 +124,11 @@ export function RiskTable({
                 <SelectItem value="rendah">Risiko Rendah</SelectItem>
               </SelectContent>
             </Select>
-
             <Select
               value={facilityFilter}
               onValueChange={onFacilityFilterChange}
             >
-              <SelectTrigger className="h-9 w-[160px]">
+              <SelectTrigger className="h-9 w-full md:w-[160px]">
                 <SelectValue placeholder="Semua fasilitas" />
               </SelectTrigger>
               <SelectContent>

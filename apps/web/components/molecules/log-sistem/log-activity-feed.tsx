@@ -25,7 +25,13 @@ import {
   TableHeader,
   TableRow,
 } from "@repo/ui/components/table";
-import { AlertCircle, CheckCircle2, Info, ChevronRight } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  Info,
+  ChevronRight,
+  Filter,
+} from "lucide-react";
 import { Fragment, useState } from "react";
 import { InputSearch } from "@/components/molecules";
 
@@ -114,15 +120,15 @@ export function LogActivityFeed({
         </div>
 
         {/* Filter bar */}
-        <div className="flex flex-col gap-3 md:flex-row md:items-center">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center lg:justify-between">
           <InputSearch
             search={search}
             onSearchChange={onSearchChange}
             placeholder="Cari user, modul, atau deskripsi..."
           />
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 gap-2 md:flex md:flex-wrap">
             <Select value={levelFilter} onValueChange={onLevelFilterChange}>
-              <SelectTrigger className="h-9 w-[140px]">
+              <SelectTrigger className="h-9 w-full md:w-[140px]">
                 <SelectValue placeholder="Level" />
               </SelectTrigger>
               <SelectContent>
@@ -134,7 +140,7 @@ export function LogActivityFeed({
               </SelectContent>
             </Select>
             <Select value={moduleFilter} onValueChange={onModuleFilterChange}>
-              <SelectTrigger className="h-9 w-[160px]">
+              <SelectTrigger className="h-9 w-full md:w-[160px]">
                 <SelectValue placeholder="Modul" />
               </SelectTrigger>
               <SelectContent>
@@ -146,7 +152,12 @@ export function LogActivityFeed({
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm" onClick={onReset}>
+            <Button
+              variant="outline"
+              onClick={onReset}
+              className="col-span-2 md:col-span-1"
+            >
+              <Filter className="h-4 w-4" />
               Reset
             </Button>
           </div>

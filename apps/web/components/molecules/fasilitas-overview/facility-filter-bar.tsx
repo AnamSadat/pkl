@@ -52,7 +52,6 @@ export function FacilityFilterBar({
         <Button
           type="button"
           variant="outline"
-          size="sm"
           className="gap-2"
           onClick={onReset}
         >
