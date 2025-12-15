@@ -86,6 +86,17 @@ export function useFileUpload({
 
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+      // Check if single mode and already has a file
+      if (
+        !multiple &&
+        (completedFiles.length > 0 || uploadingFiles.length > 0)
+      ) {
+        toast.error(
+          "Hanya boleh upload 1 file. Hapus file sebelumnya terlebih dahulu."
+        );
+        return;
+      }
+
       if (rejectedFiles.length > 0) {
         const errorMessages = rejectedFiles.map((rejection) => {
           const errors = rejection.errors.map((e) => {
@@ -106,20 +117,34 @@ export function useFileUpload({
 
       if (valid.length === 0) return;
 
-      const newUploadingFiles: FileWithProgress[] = valid.map((file) => ({
-        file,
-        progress: 0,
-        uploadedSize: 0,
-      }));
+      // For single mode, only take the first file
+      const filesToUpload = multiple ? valid : valid.slice(0, 1);
+
+      const newUploadingFiles: FileWithProgress[] = filesToUpload.map(
+        (file) => ({
+          file,
+          progress: 0,
+          uploadedSize: 0,
+        })
+      );
 
       setUploadingFiles((prev) =>
         multiple ? [...prev, ...newUploadingFiles] : newUploadingFiles
       );
 
       newUploadingFiles.forEach((f) => simulateUpload(f.file));
-      onFilesChange?.([...completedFiles, ...valid]);
+      onFilesChange?.(
+        multiple ? [...completedFiles, ...filesToUpload] : filesToUpload
+      );
     },
-    [completedFiles, multiple, onFilesChange, simulateUpload, validateFiles]
+    [
+      completedFiles,
+      uploadingFiles,
+      multiple,
+      onFilesChange,
+      simulateUpload,
+      validateFiles,
+    ]
   );
 
   const removeFile = useCallback(
