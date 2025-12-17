@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { AppBreadcrumb } from "@/components/organism";
 
 const baseClassButton =
-  "bg-transparent text-black dark:text-white hover:bg-neutral-100 cursor-pointer";
+  "bg-transparent text-black dark:text-white cursor-pointer";
 
 function formatPathSegment(segment: string) {
   return segment

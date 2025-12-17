@@ -62,7 +62,7 @@ export function AppSidebarContent() {
             {menuItems.map((item) => (
               <SidebarMenuItem key={item.title} className="mx-3">
                 <SidebarMenuButton
-                  className="hover:bg-neutral-200 dark:hover:bg-neutral-800"
+                  className="hover:bg-sidebar-accent dark:hover:bg-sidebar-accent"
                   asChild
                 >
                   <Link
@@ -71,7 +71,7 @@ export function AppSidebarContent() {
                     className={cn(
                       "px-4",
                       pathname === item.url
-                        ? "dark:bg-neutral-800 bg-neutral-200"
+                        ? "dark:bg-sidebar-accent bg-sidebar-accent"
                         : ""
                     )}
                   >
