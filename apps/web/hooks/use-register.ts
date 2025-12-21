@@ -19,12 +19,13 @@ export function useRegister() {
         return { success: true, message: "Register berhasil" };
       } catch (error: any) {
         setError(true);
-        setMessage(
-          error.response?.data?.detail || "Register gagal, periksa kembali data"
-        );
+        const errorMessage =
+          error.response?.data?.detail ||
+          "Register gagal, periksa kembali data";
+        setMessage(errorMessage);
         return {
           success: false,
-          message,
+          message: errorMessage,
         };
       } finally {
         setLoading(false);

@@ -64,9 +64,9 @@ export function AppFormSignUp() {
 
   const onSubmit = async (data: formSignUpSchema) => {
     try {
-      await register(data);
-      if (!success) {
-        toast.error(message);
+      const result = await register(data);
+      if (!result.success) {
+        toast.error(result.message);
         return;
       }
 
@@ -80,8 +80,8 @@ export function AppFormSignUp() {
         return;
       }
 
-      toast.success(message);
-      router.push("/");
+      toast.success(result.message);
+      router.push("/dashboard");
     } catch (error) {
       toast.error("Register gagal, periksa kembali data");
     }
