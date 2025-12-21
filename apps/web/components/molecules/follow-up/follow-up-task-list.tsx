@@ -110,8 +110,8 @@ export function FollowUpTaskList({
   return (
     <Card>
       <CardHeader className="space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <div>
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
             <CardTitle className="text-base">Daftar Tugas Follow Up</CardTitle>
             <CardDescription>
               Tugas yang perlu dikerjakan oleh petugas hari ini dan mendatang.
@@ -121,7 +121,7 @@ export function FollowUpTaskList({
             type="button"
             variant="outline"
             size="sm"
-            className="gap-2"
+            className="shrink-0 gap-2"
             onClick={onReset}
           >
             <Filter className="h-4 w-4" />
@@ -130,12 +130,12 @@ export function FollowUpTaskList({
         </div>
 
         {/* Filter bar */}
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-start">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-beetwen">
           <InputSearch
             search={search}
             onSearchChange={onSearchChange}
-            placeholder="Cari nama peserta atau fasilitas..."
-            className="lg:w-2xl"
+            placeholder="Cari peserta atau fasilitas..."
+            className="w-full md:flex-1 md:max-w-xs lg:max-w-sm"
           />
           <div className="grid grid-cols-2 gap-2 md:flex md:flex-wrap md:justify-end">
             <Select value={stageFilter} onValueChange={onStageFilterChange}>
