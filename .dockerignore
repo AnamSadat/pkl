@@ -1,0 +1,47 @@
+# --- GLOBAL & SYSTEM ---
+.git
+.gitignore
+.DS_Store
+.env
+.env.*
+Dockerfile
+docker-compose.yml
+
+# --- NODE.JS / NEXT.JS ---
+node_modules
+**/node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Hasil build JS
+.next
+**/.next
+dist
+**/dist
+build
+**/build
+.turbo
+**/.turbo
+
+# --- PYTHON ---
+# Cache compiled python (penting pakai **/)
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Virtual Environments (lokal laptop jangan masuk docker)
+env/
+**/env/
+venv/
+**/venv/
+.venv/
+**/.venv/
+
+# Testing & Type Checking Cache
+.pytest_cache
+**/.pytest_cache
+.mypy_cache
+**/.mypy_cache
+.coverage

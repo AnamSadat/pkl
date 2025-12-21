@@ -1,0 +1,42 @@
+services:
+  web:
+    image: pkl-web:latest
+    container_name: pkl-web-container
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      COOKIE_SECURE: ${COOKIE_SECURE}
+      COOKIE_SAMESITE: ${COOKIE_SAMESITE}
+    ports:
+      - "3000:3000"
+
+  api:
+    image: pkl-api:latest
+    container_name: pkl-api-container
+    restart: always
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      SECRET_KEY: ${SECRET_KEY}
+      ALGORITHM: ${ALGORITHM}
+      ACCESS_TOKEN_EXPIRE: ${ACCESS_TOKEN_EXPIRE}
+      RUN_MIGRATIONS: "false" # Set "true" hanya di 1 instance atau saat deploy
+    ports:
+      - "8000:8000"
+    external_links:
+      - mysql-container:mysql
+
+  mysql:
+    image: mysql:latest
+    container_name: pkl-mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+networks:
+  default:
+    name: pkl-network
+    external: true
