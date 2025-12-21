@@ -66,7 +66,11 @@ export default function AuthPage() {
             />
           </div>
 
-          {isSignIn ? <AppFormSignIn /> : <AppFormSignUp />}
+          {isSignIn ? (
+            <AppFormSignIn />
+          ) : (
+            <AppFormSignUp onRegisterSuccess={() => setMode("signIn")} />
+          )}
 
           <p className="text-xs sm:text-sm sm:hidden text-center">
             {isSignIn ? "Belum punya akun? " : "Sudah punya akun? "}

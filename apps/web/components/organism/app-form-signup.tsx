@@ -27,28 +27,19 @@ import {
   InputGroupText,
 } from "@repo/ui/components/input-group";
 import { Spinner } from "@repo/ui/components/spinner";
-import {
-  Eye,
-  EyeOff,
-  Key,
-  KeyRound,
-  Lock,
-  Mail,
-  Phone,
-  User,
-} from "lucide-react";
+import { Eye, EyeOff, KeyRound, Lock, Mail, Phone, User } from "lucide-react";
 import { useState } from "react";
 import { useRegister } from "@/hooks";
-import { useAuth } from "@/store";
-import { useRouter } from "next/navigation";
 import { cn } from "@repo/ui/utils";
 
-export function AppFormSignUp() {
-  const { register, loading, error, success, message } = useRegister();
-  const { login } = useAuth();
+export function AppFormSignUp({
+  onRegisterSuccess,
+}: {
+  onRegisterSuccess?: () => void;
+}) {
+  const { register, loading } = useRegister();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const router = useRouter();
 
   const form = useForm<formSignUpSchema>({
     resolver: zodResolver(signUpSchema),
@@ -70,19 +61,9 @@ export function AppFormSignUp() {
         return;
       }
 
-      const responseLogin = await login({
-        email: data.email,
-        password: data.password,
-      });
-
-      if (!responseLogin.success) {
-        toast.error(responseLogin.message);
-        return;
-      }
-
-      toast.success(result.message);
-      router.push("/dashboard");
-    } catch (error) {
+      toast.success("Register berhasil, silakan login");
+      onRegisterSuccess?.();
+    } catch {
       toast.error("Register gagal, periksa kembali data");
     }
   };
