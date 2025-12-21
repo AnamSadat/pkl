@@ -14,16 +14,17 @@ services:
     image: pkl-api:latest
     container_name: pkl-api-container
     restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
     environment:
       DATABASE_URL: ${DATABASE_URL}
       SECRET_KEY: ${SECRET_KEY}
       ALGORITHM: ${ALGORITHM}
       ACCESS_TOKEN_EXPIRE: ${ACCESS_TOKEN_EXPIRE}
-      RUN_MIGRATIONS: "false" # Set "true" hanya di 1 instance atau saat deploy
+      RUN_MIGRATIONS: "true" # Set "true" hanya di 1 instance atau saat deploy
     ports:
       - "8000:8000"
-    external_links:
-      - mysql-container:mysql
 
   mysql:
     image: mysql:latest
@@ -31,12 +32,31 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: bnn
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
 networks:
   default:
     name: pkl-network
-    external: true
+
+volumes:
+  mysql_data:

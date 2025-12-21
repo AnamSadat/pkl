@@ -12,25 +12,35 @@ WORKDIR /app
 # 1. Copy file konfigurasi DARI ROOT (pnpm-lock & package.json root)
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# 2. Copy package.json milik APPS/WEB
-# Kita harus buat foldernya dulu biar strukturnya sama kayak aslinya
+# 2. Copy semua package.json dari workspace packages
 COPY apps/web/package.json ./apps/web/package.json
+COPY packages/ui/package.json ./packages/ui/package.json
+COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
+COPY packages/tailwind-config/package.json ./packages/tailwind-config/package.json
+COPY packages/eslint-config/package.json ./packages/eslint-config/package.json
 
 # 3. Install dependencies
-# Ini akan install semua node_modules berdasarkan lockfile di root
 RUN pnpm install --frozen-lockfile
 
 # --- STAGE: BUILDER ---
 FROM base AS builder
 WORKDIR /app
 
-# Copy node_modules dari stage deps
+# Copy node_modules dari stage deps (root + all workspaces)
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
+COPY --from=deps /app/packages/ui/node_modules ./packages/ui/node_modules
+
 # Copy sisa source code (Semuanya, dari root)
 COPY . .
 
 # Build project (gunakan filter untuk build apps/web saja)
 ENV NEXT_TELEMETRY_DISABLED=1
+
+# Set API URL for Docker network
+ARG NEXT_PUBLIC_API_URL=http://api:8000
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 RUN pnpm --filter "./apps/web" run build
 
 # --- STAGE: RUNNER ---
