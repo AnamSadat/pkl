@@ -60,7 +60,7 @@ export function AppFormSignIn() {
       }
 
       toast.success("Berhasil login");
-      router.push("/");
+      router.push("/dashboard");
     } catch (error) {
       console.log("Error: ", error);
       toast.error("Email atau password salah");
